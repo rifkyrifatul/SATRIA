@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Book - E-Surat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #e0e7ff;
+            --secondary: #0ea5e9;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --border: #e2e8f0;
+            --accent: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-body);
+            line-height: 1.7;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Poppins', sans-serif;
+            color: #0f172a;
+        }
+
+        .header-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .header-banner h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-banner p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .layout {
+            display: flex;
+            max-width: 1200px;
+            margin: 40px auto;
+            gap: 30px;
+            padding: 0 20px;
+            align-items: flex-start;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            flex: 0 0 280px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 24px;
+            position: sticky;
+            top: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 10px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+        
+        .sidebar ul ul {
+            padding-left: 15px;
+            margin-top: 5px;
+            border-left: 2px solid var(--border);
+            margin-left: 10px;
+        }
+
+        /* Content Styles */
+        .content {
+            flex: 1;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 40px 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            min-width: 0;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 32px;
+            background: var(--primary);
+            margin-right: 15px;
+            border-radius: 4px;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        /* Callout / Notice Box */
+        .notice-box {
+            background-color: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+            color: #166534;
+        }
+
+        .step-box {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+        
+        .step-box strong {
+            color: var(--primary);
+            font-family: 'Poppins', sans-serif;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+
+        .step-box ol {
+            padding-left: 20px;
+        }
+
+        .step-box li {
+            margin-bottom: 8px;
+        }
+        
+        .step-box li::marker {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Image Placeholder */
+        .image-placeholder {
+            background: linear-gradient(45deg, #f8fafc 25%, #f1f5f9 25%, #f1f5f9 50%, #f8fafc 50%, #f8fafc 75%, #f1f5f9 75%, #f1f5f9 100%);
+            background-size: 20px 20px;
+            border: 2px dashed #cbd5e1;
+            padding: 50px 20px;
+            text-align: center;
+            color: #64748b;
+            font-weight: 500;
+            border-radius: 12px;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .image-placeholder:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 8px 15px rgba(79, 70, 229, 0.1);
+        }
+        
+        .image-placeholder svg {
+            width: 48px;
+            height: 48px;
+            fill: currentColor;
+            opacity: 0.8;
+            transition: transform 0.3s;
+        }
+
+        .image-placeholder:hover svg {
+            transform: scale(1.1);
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid var(--border);
+            margin: 40px 0;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #0f172a;
+            color: #94a3b8;
+            margin-top: 50px;
+        }
+
+        /* List styling */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 15px;
+            background: #f8fafc;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-right: 15px;
+            border-radius: 8px;
+        }
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 12px;
+            top: 10px;
+            color: #ffffff;
+            background: var(--secondary);
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        /* Grid for Specs */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .spec-card {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 10px;
+            border-top: 4px solid var(--secondary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        
+        .spec-card.client {
+            border-top-color: var(--primary);
+        }
+
+        .spec-card h4 {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+        }
+
+        .spec-card ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .layout {
+                flex-direction: column;
+            }
+            .sidebar {
+                flex: none;
+                width: 100%;
+                position: static;
+                max-height: none;
+                margin-bottom: 20px;
+            }
+            .content {
+                padding: 30px 20px;
+            }
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-banner">
+        <h1>Buku Panduan Penggunaan</h1>
+        <p>Sistem Informasi Persuratan (E-Surat) &bull; Tahun 2026</p>
+    </header>
+
+    <div class="layout">
+        <!-- SIDEBAR TOC -->
+        <aside class="sidebar">
+            <h3>Daftar Isi</h3>
+            <ul>
+                <li><a href="#pengantar">Kata Pengantar</a></li>
+                <li><a href="#pendahuluan">Bab A: Pendahuluan</a></li>
+                <li><a href="#spesifikasi">Bab B: Spesifikasi Sistem</a></li>
+                <li><a href="#prosedur">Bab C: Prosedur Penggunaan</a>
+                    <ul>
+                        <li><a href="#landing">1. Halaman Landing</a></li>
+                        <li><a href="#login">2. Proses Login</a></li>
+                        <li><a href="#admin">3. Hak Akses Admin</a></li>
+                        <li><a href="#sekretaris">4. Hak Akses Sekretaris</a></li>
+                        <li><a href="#pimpinan">5. Hak Akses Pimpinan</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="content">
+            
+            <section id="pengantar">
+                <h2 class="section-title">Kata Pengantar</h2>
+                <div class="notice-box">
+                    <p>Assalaamu'alaikum Warahmatullahi Wabarakatuh,</p>
+                    <p style="margin-bottom:0;">Puji syukur senantiasa kita panjatkan kehadirat Allah Subhanahu wa Ta'ala atas limpahan rahmat dan karunia-Nya, sehingga pengembangan <strong>Sistem Informasi Persuratan (E-Surat)</strong> ini dapat diselesaikan dengan baik pada tahun 2026. Salawat serta salam senantiasa tercurah kepada junjungan kita, Nabi Muhammad Shallallahu 'alaihi wa sallam, beserta keluarga, sahabat, dan umatnya yang setia.</p>
+                </div>
+                <p>Buku Panduan Penggunaan (Manual Book) ini disusun sebagai pedoman komprehensif bagi seluruh pengguna aplikasi E-Surat. Sistem ini dibangun dengan tujuan utama untuk mewujudkan tata kelola persuratan yang lebih modern, transparan, dan efisien, sehingga setiap proses dari penerimaan hingga disposisi surat dapat dipantau dan dikelola dengan optimal.</p>
+                <p>Kami menyadari bahwa sistem dan buku panduan ini mungkin masih memiliki kekurangan. Oleh karena itu, kritik dan saran yang membangun sangat kami harapkan guna penyempurnaan di masa yang akan datang. Semoga sistem E-Surat ini dapat memberikan manfaat yang nyata dan mempermudah kelancaran birokrasi dan administrasi di lingkungan kerja kita.</p>
+                <p>Wassalaamu'alaikum Warahmatullahi Wabarakatuh.</p>
+                <p style="text-align: right; margin-top: 30px;">
+                    Jakarta, 26 Juni 2026<br>
+                    <strong>Tim Penyusun E-Surat</strong>
+                </p>
+            </section>
+
+            <section id="pendahuluan">
+                <h2 class="section-title">BAB A: PENDAHULUAN</h2>
+                <p>Sistem Informasi Persuratan (E-Surat) adalah aplikasi berbasis web yang dikembangkan secara khusus untuk memfasilitasi dan mengotomatisasi proses pengelolaan administrasi persuratan. Di era digital saat ini, manajemen persuratan yang masih menggunakan metode konvensional (manual) kerap dihadapkan pada berbagai kendala, seperti risiko kehilangan atau kerusakan arsip fisik, lambatnya proses pencarian dokumen, serta keterlambatan distribusi surat dan disposisi dari pimpinan.</p>
+                <p>Oleh karena itu, kehadiran E-Surat menjadi sangat krusial. Sistem ini dirancang dengan keunggulan sebagai berikut:</p>
+                
+                <ul class="feature-list">
+                    <li><strong>Efisiensi Birokrasi</strong>: Mengurangi waktu yang dihabiskan untuk mencatat dan mendistribusikan surat secara fisik, sehingga mempercepat alur informasi antar divisi/bidang.</li>
+                    <li><strong>Pencatatan Arsip Digital yang Rapi</strong>: Seluruh surat masuk, surat keluar, beserta dokumen lampirannya akan didigitalkan dan tersimpan secara terpusat, memudahkan pencarian (<em>retrieval</em>) data dalam hitungan detik.</li>
+                    <li><strong>Kemudahan Disposisi Tanpa Batas Ruang dan Waktu</strong>: Pimpinan dapat memantau kotak masuk, memberikan instruksi, dan melakukan disposisi surat secara <em>real-time</em> dari perangkat apa saja (laptop, tablet, atau smartphone), tanpa harus berada di kantor.</li>
+                </ul>
+            </section>
+
+            <section id="spesifikasi">
+                <h2 class="section-title">BAB B: SPESIFIKASI SISTEM</h2>
+                <p>Untuk dapat menjalankan Sistem Informasi Persuratan (E-Surat) dengan lancar dan optimal, terdapat kebutuhan spesifikasi minimal, baik di sisi <em>Server</em> maupun <em>Client</em> (Pengguna).</p>
+                
+                <div class="specs-grid">
+                    <div class="spec-card">
+                        <h4>💻 1. Minimum Server</h4>
+                        <ul>
+                            <li><strong>Prosesor:</strong> Intel Xeon / AMD EPYC (Min. 2 Core)</li>
+                            <li><strong>RAM:</strong> Min. 4 GB (Rekomendasi 8 GB+)</li>
+                            <li><strong>Penyimpanan:</strong> SSD 50 GB</li>
+                            <li><strong>OS:</strong> Linux (Ubuntu 22.04 / Debian) atau Windows</li>
+                            <li><strong>Software:</strong> Nginx/Apache, PHP 8.1+, Laravel 10/11, MySQL 8.0</li>
+                        </ul>
+                    </div>
+                    <div class="spec-card client">
+                        <h4>📱 2. Minimum Client/User</h4>
+                        <ul>
+                            <li><strong>Perangkat:</strong> PC, Laptop, Tablet, Smartphone</li>
+                            <li><strong>RAM:</strong> Minimal 2 GB</li>
+                            <li><strong>Layar:</strong> Minimal 1024x768 piksel</li>
+                            <li><strong>Browser:</strong> Chrome, Firefox, Edge, Safari versi terbaru</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="prosedur">
+                <h2 class="section-title">BAB C: PROSEDUR PENGGUNAAN</h2>
+                <p>Sistem E-Surat dibangun dengan antarmuka yang ramah pengguna (<em>user-friendly</em>). Berikut adalah panduan langkah demi langkah berdasarkan alur penggunaan dan hak akses.</p>
+
+                <div id="landing">
+                    <h3>1. Halaman Landing / Index Aplikasi</h3>
+                    <p>Halaman ini adalah pintu gerbang utama (beranda publik) sebelum pengguna terotentikasi memasuki sistem. Memuat informasi umum aplikasi dan akses form login.</p>
+                    
+                    <div class="image-placeholder">
+                        <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                        <span>[Gambar 1: Tampilan Halaman Landing / Index Aplikasi]</span>
+                    </div>
+
+                    <div class="step-box">
+                        <strong>Langkah-langkah Akses:</strong>
+                        <ol>
+                            <li>Buka peramban web (browser) di perangkat Anda.</li>
+                            <li>Ketikkan alamat URL aplikasi E-Surat pada kolom <em>address bar</em>.</li>
+                            <li>Tekan <strong>Enter</strong>. Anda akan diarahkan ke Halaman Landing Aplikasi.</li>
+                            <li>Klik tombol <strong>Login</strong> atau <strong>Masuk Sistem</strong> untuk melanjutkan ke proses otentikasi.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div id="login">
+                    <h3>2. Proses Login System</h3>
+                    <p>Halaman Login difungsikan sebagai lapis keamanan untuk memverifikasi hak akses (<em>role</em>) pengguna.</p>
+                    
+                    <div class="image-placeholder">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                        <span>[Gambar 2: Tampilan Halaman Login System]</span>
+                    </div>
+
+                    <div class="step-box">
+                        <strong>Langkah-langkah Login:</strong>
+                        <ol>
+                            <li>Masukkan <strong>Username</strong> (atau Email/NIP) Anda pada kolom isian pertama.</li>
+                            <li>Masukkan <strong>Password</strong> (kata sandi) Anda dengan benar. Pastikan tombol <em>Caps Lock</em> tidak aktif jika sandi menggunakan huruf kecil.</li>
+                            <li>Klik tombol <strong>Login</strong>.</li>
+                            <li>Jika valid, sistem akan otomatis mengarahkan Anda ke <strong>Dashboard</strong> sesuai hak akses Anda. Jika gagal, peringatan merah akan muncul.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div id="admin">
+                    <h3>3. Hak Akses ADMIN</h3>
+                    <p>Administrator memiliki kendali penuh pada konfigurasi sistem, mengelola akun, dan menyiapkan <em>master data</em>.</p>
+
+                    <h4>3.1 Dashboard Admin</h4>
+                    <div class="image-placeholder">
+                        <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                        <span>[Gambar 3: Tampilan Dashboard Admin]</span>
+                    </div>
+                    <p><strong>Penjelasan:</strong> Menyajikan ringkasan statistik (jumlah <em>user</em> aktif, instansi, total surat masuk/keluar) dalam bentuk grafik dan <em>card</em> informasi.</p>
+
+                    <h4>3.2 Manajemen Data Pengguna</h4>
+                    <div class="image-placeholder">
+                        <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                        <span>[Gambar 4: Tampilan Manajemen Data Pengguna]</span>
+                    </div>
+                    
+                    <div class="step-box">
+                        <strong>Cara Menambah Pengguna:</strong>
+                        <ol>
+                            <li>Klik menu <strong>Pengguna</strong> atau <strong>Manajemen User</strong>.</li>
+                            <li>Klik tombol <strong>+ Tambah User Baru</strong>.</li>
+                            <li>Isi form data: Nama Lengkap, Username/NIP, Password, dan Hak Akses (Role).</li>
+                            <li>Klik tombol <strong>Simpan</strong>.</li>
+                        </ol>
+                    </div>
+
+                    <h4>3.3 Manajemen Master Data</h4>
+                    <div class="image-placeholder">
+                        <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
+                        <span>[Gambar 5: Tampilan Master Data]</span>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div id="sekretaris">
+                    <h3>4. Hak Akses SEKRETARIS / STAF</h3>
+                    <p>Sekretaris atau Staf bertugas menangani persuratan operasional, mulai dari registrasi hingga <em>scanning</em> dokumen.</p>
+
+                    <h4>4.1 Dashboard Sekretaris</h4>
+                    <div class="image-placeholder">
+                        <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                        <span>[Gambar 6: Tampilan Dashboard Sekretaris]</span>
+                    </div>
+
+                    <h4>4.2 Pengelolaan Surat Masuk</h4>
+                    <div class="image-placeholder">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5-7l-3 3.72L9 13l-3 4h12l-4-5.28z"/></svg>
+                        <span>[Gambar 7: Tampilan Pengelolaan Surat Masuk]</span>
+                    </div>
+
+                    <div class="step-box">
+                        <strong>Langkah Registrasi Surat Masuk:</strong>
+                        <ol>
+                            <li>Klik menu <strong>Surat Masuk</strong> -> <strong>Tambah Surat Masuk</strong>.</li>
+                            <li>Isi form pendaftaran (Nomor Surat, Tanggal, Pengirim, Perihal).</li>
+                            <li><strong>Unggah Berkas (Scan):</strong> Pilih file scan surat asli dalam format <strong>.pdf</strong>.</li>
+                            <li>Klik <strong>Simpan</strong>. Notifikasi otomatis diteruskan ke Pimpinan.</li>
+                        </ol>
+                    </div>
+
+                    <h4>4.3 Pengelolaan Surat Keluar</h4>
+                    <div class="image-placeholder">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5-7l-3 3.72L9 13l-3 4h12l-4-5.28z"/></svg>
+                        <span>[Gambar 8: Tampilan Surat Keluar]</span>
+                    </div>
+
+                    <h4>4.4 Cetak Laporan Agenda Surat</h4>
+                    <div class="image-placeholder">
+                        <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+                        <span>[Gambar 9: Tampilan Laporan Agenda]</span>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div id="pimpinan">
+                    <h3>5. Hak Akses PIMPINAN</h3>
+                    <p>Pimpinan bertugas membaca esensi surat dan memberikan arahan (disposisi).</p>
+
+                    <h4>5.1 Dashboard Pimpinan</h4>
+                    <div class="image-placeholder">
+                        <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                        <span>[Gambar 10: Tampilan Dashboard Pimpinan]</span>
+                    </div>
+
+                    <h4>5.2 Kotak Masuk Surat</h4>
+                    <div class="image-placeholder">
+                        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                        <span>[Gambar 11: Tampilan Kotak Masuk]</span>
+                    </div>
+
+                    <div class="step-box">
+                        <strong>Cara Membaca Surat:</strong>
+                        <ol>
+                            <li>Klik menu <strong>Kotak Masuk</strong>. Surat baru ditandai tebal (<em>bold</em>).</li>
+                            <li>Klik tombol <strong>Lihat Detail</strong> (ikon mata) di baris surat.</li>
+                            <li>Dokumen PDF akan langsung terbuka di jendela sistem tanpa perlu diunduh.</li>
+                        </ol>
+                    </div>
+
+                    <h4>5.3 Proses Disposisi Digital</h4>
+                    <div class="image-placeholder">
+                        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                        <span>[Gambar 12: Tampilan Proses Disposisi Digital]</span>
+                    </div>
+
+                    <div class="step-box">
+                        <strong>Cara Disposisi:</strong>
+                        <ol>
+                            <li>Setelah membaca surat, geser layar ke bagian <strong>Form Disposisi</strong>.</li>
+                            <li><strong>Pilih Tujuan:</strong> Centang nama Staf / Divisi yang dituju.</li>
+                            <li><strong>Pilih Sifat:</strong> (Biasa, Segera, Rahasia).</li>
+                            <li><strong>Isi Instruksi:</strong> Ketikkan arahan spesifik untuk bawahan.</li>
+                            <li>Klik <strong>Simpan & Kirim Disposisi</strong>.</li>
+                        </ol>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Sistem Informasi Persuratan (E-Surat). All rights reserved.</p>
+        <p style="font-size: 0.85em; margin-top: 5px; opacity: 0.7;">Dokumen ini digenerate secara otomatis.</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.sidebar a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
