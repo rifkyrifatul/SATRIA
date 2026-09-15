@@ -81,13 +81,13 @@ class SuperAdminTrashController extends Controller
     {
         $category = Category::onlyTrashed()->findOrFail($id);
         $category->restore();
-        return redirect()->route('super_admin.trash.index', ['tab' => 'categories'])->with('success', 'Kategori berhasil dipulihkan.');
+        return redirect()->route('super_admin.trash.index', ['tab' => 'categories'])->with('success', 'Alur pengajuan berhasil dipulihkan.');
     }
 
     public function forceDeleteCategory($id)
     {
         $category = Category::onlyTrashed()->findOrFail($id);
         $category->forceDelete();
-        return redirect()->route('super_admin.trash.index', ['tab' => 'categories'])->with('success', 'Kategori berhasil dihapus permanen.');
+        return redirect()->route('super_admin.trash.index', ['tab' => 'categories'])->with('success', 'Alur pengajuan berhasil dihapus permanen.');
     }
 }

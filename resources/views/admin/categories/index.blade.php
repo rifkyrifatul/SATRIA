@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'KELOLA SURAT')
+@section('title', 'KELOLA ALUR PENGAJUAN')
 
 @section('content')
 <div class="max-w-7xl mx-auto space-y-6">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
-            <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Daftar Kategori</h1>
-            <p class="text-sm text-slate-500 mt-1">Kelola jenis kategori beserta alur review yang diterapkan pada kategori tersebut.</p>
+            <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Daftar Alur Pengajuan</h1>
+            <p class="text-sm text-slate-500 mt-1">Kelola jenis alur pengajuan beserta alur review yang diterapkan.</p>
         </div>
         <a href="{{ route((Auth::user()->role === 'super_admin' ? 'super_admin' : 'admin') . '.categories.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-bold rounded-xl hover:bg-indigo-700 transition-colors shadow-sm">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
-            Tambah Kategori
+            Tambah Alur Pengajuan
         </a>
     </div>
 
@@ -27,7 +27,7 @@
                 </svg>
             </div>
             <input type="text" name="search" value="{{ request('search') }}"
-                   placeholder="Cari kategori surat..."
+                   placeholder="Cari alur pengajuan..."
                    class="w-full pl-10 pr-4 py-2.5 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 placeholder:text-slate-400 transition-colors">
         </div>
         
@@ -53,7 +53,7 @@
                 <thead>
                     <tr class="bg-indigo-600 dark:bg-indigo-800">
                         <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider w-16 text-center">No</th>
-                        <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider">Kategori Surat</th>
+                        <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider">Alur Pengajuan</th>
                         <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider text-center">Jumlah Surat</th>
                         <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider">Alur Review</th>
                         <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider text-right">Aksi</th>
@@ -90,7 +90,7 @@
                                 <div class="flex items-center justify-end gap-3">
                                     <a href="{{ route((Auth::user()->role === 'super_admin' ? 'super_admin' : 'admin') . '.categories.edit', $category) }}" class="text-sm font-bold text-slate-400 hover:text-indigo-600 transition-colors">Edit</a>
                                     
-                                    <form action="{{ route((Auth::user()->role === 'super_admin' ? 'super_admin' : 'admin') . '.categories.destroy', $category) }}" method="POST" onsubmit="confirmDelete(event, 'Apakah Anda yakin ingin menghapus kategori ini?');" class="inline">
+                                    <form action="{{ route((Auth::user()->role === 'super_admin' ? 'super_admin' : 'admin') . '.categories.destroy', $category) }}" method="POST" onsubmit="confirmDelete(event, 'Apakah Anda yakin ingin menghapus alur pengajuan ini?');" class="inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-sm font-bold text-slate-400 hover:text-rose-600 transition-colors">Hapus</button>
@@ -106,8 +106,8 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                     </svg>
                                 </div>
-                                <p class="text-slate-700 dark:text-slate-300 font-bold">Belum ada kategori surat</p>
-                                <p class="text-slate-500 font-medium text-sm mt-1 mb-6">Kategori yang ditambahkan akan muncul di sini.</p>
+                                <p class="text-slate-700 dark:text-slate-300 font-bold">Belum ada alur pengajuan</p>
+                                <p class="text-slate-500 font-medium text-sm mt-1 mb-6">Alur pengajuan yang ditambahkan akan muncul di sini.</p>
                             </td>
                         </tr>
                     @endforelse

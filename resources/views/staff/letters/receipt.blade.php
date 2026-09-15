@@ -85,7 +85,7 @@
                         <td class="py-3 font-bold text-black text-base uppercase">{{ $letter->title }}</td>
                     </tr>
                     <tr class="border-b border-gray-200 print-border">
-                        <td class="py-3 font-semibold text-gray-600">Kategori Surat</td>
+                        <td class="py-3 font-semibold text-gray-600">Alur Pengajuan</td>
                         <td class="py-3 font-bold text-black">{{ $letter->category->name ?? 'Surat Umum' }}</td>
                     </tr>
                     <tr class="border-b border-gray-200 print-border">

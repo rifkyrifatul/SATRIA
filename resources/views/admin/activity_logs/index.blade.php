@@ -61,7 +61,7 @@
                                         $subject = $log->subject_type ? class_basename($log->subject_type) : '';
                                         $subjectName = match($subject) {
                                             'User'           => 'Pengguna',
-                                            'Category'       => 'Kategori Surat',
+                                            'Category'       => 'Alur Pengajuan',
                                             'Letter'         => 'Surat',
                                             'LetterTemplate' => 'Template Surat',
                                             'StaffDivision'  => 'Divisi Staff',

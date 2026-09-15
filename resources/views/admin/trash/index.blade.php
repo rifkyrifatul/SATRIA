@@ -16,7 +16,7 @@
         <a href="{{ route('super_admin.trash.index', ['tab' => 'letters']) }}" class="px-5 py-2.5 text-sm font-bold rounded-xl transition-colors {{ $tab == 'letters' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700' }}">Surat</a>
         <a href="{{ route('super_admin.trash.index', ['tab' => 'templates']) }}" class="px-5 py-2.5 text-sm font-bold rounded-xl transition-colors {{ $tab == 'templates' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700' }}">Template Surat</a>
         <a href="{{ route('super_admin.trash.index', ['tab' => 'users']) }}" class="px-5 py-2.5 text-sm font-bold rounded-xl transition-colors {{ $tab == 'users' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700' }}">Pengguna</a>
-        <a href="{{ route('super_admin.trash.index', ['tab' => 'categories']) }}" class="px-5 py-2.5 text-sm font-bold rounded-xl transition-colors {{ $tab == 'categories' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700' }}">Kategori</a>
+        <a href="{{ route('super_admin.trash.index', ['tab' => 'categories']) }}" class="px-5 py-2.5 text-sm font-bold rounded-xl transition-colors {{ $tab == 'categories' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700' }}">Alur Pengajuan</a>
     </div>
 
     <!-- Content -->

@@ -51,7 +51,7 @@
                     <tr class="bg-indigo-600 dark:bg-indigo-800">
                         <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider w-16">No</th>
                         <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider">Judul Surat</th>
-                        <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider">Kategori Surat</th>
+                        <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider">Alur Pengajuan</th>
                         <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider">No Surat</th>
                         <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider">Status</th>
                         <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider hidden md:table-cell">Tgl. Pengajuan</th>

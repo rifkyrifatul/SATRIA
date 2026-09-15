@@ -65,7 +65,7 @@
                 <th width="5%">No</th>
                 <th width="15%">No. Surat</th>
                 <th width="25%">Judul Surat</th>
-                <th width="15%">Kategori</th>
+                <th width="15%">Alur Pengajuan</th>
                 <th width="15%">Pembuat / Divisi</th>
                 <th width="10%">Tanggal</th>
                 <th width="15%">Status</th>

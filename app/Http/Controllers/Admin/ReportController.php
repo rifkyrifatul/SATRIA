@@ -66,7 +66,7 @@ class ReportController extends Controller
             "Expires"             => "0"
         ];
 
-        $columns = ['ID', 'Nomor Surat', 'Judul Surat', 'Kategori', 'Pembuat', 'Divisi', 'Status', 'Tanggal Diajukan'];
+        $columns = ['ID', 'Nomor Surat', 'Judul Surat', 'Alur Pengajuan', 'Pembuat', 'Divisi', 'Status', 'Tanggal Diajukan'];
 
         $callback = function() use($letters, $columns) {
             $file = fopen('php://output', 'w');

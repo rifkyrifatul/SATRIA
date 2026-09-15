@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'EDIT KATEGORI SURAT')
+@section('title', 'EDIT ALUR PENGAJUAN')
 
 @section('content')
 <div class="max-w-3xl mx-auto space-y-6">
@@ -9,7 +9,7 @@
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
         </a>
         <div>
-            <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Pembaruan Kategori</h1>
+            <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Pembaruan Alur Pengajuan</h1>
             <p class="text-sm text-slate-500 mt-1">Perbarui informasi nama atau alur verifikasi birokrasi.</p>
         </div>
     </div>
@@ -18,9 +18,9 @@
         @csrf
         @method('PUT')
 
-        {{-- Input Nama Kategori --}}
+        {{-- Input Nama Alur Pengajuan --}}
         <div class="mb-8">
-            <label for="name" class="block text-sm font-bold text-slate-800 dark:text-slate-200 mb-2">Nama Jenis Surat <span class="text-rose-500">*</span></label>
+            <label for="name" class="block text-sm font-bold text-slate-800 dark:text-slate-200 mb-2">Nama Alur Pengajuan <span class="text-rose-500">*</span></label>
             <input type="text" name="name" id="name" value="{{ old('name', $category->name) }}" required
                    class="w-full rounded-xl border-slate-300 dark:border-slate-600 focus:border-indigo-500 focus:ring-indigo-500 text-sm py-2.5 px-4 bg-slate-50 dark:bg-slate-900/50 focus:bg-white transition-colors">
             @error('name')

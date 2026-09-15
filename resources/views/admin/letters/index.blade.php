@@ -54,7 +54,7 @@
                         <th class="text-center px-4 py-3.5 text-[10px] font-extrabold text-white uppercase tracking-wider w-12 rounded-tl-lg">No</th>
                         <th class="text-left px-6 py-3.5 text-[10px] font-extrabold text-white uppercase tracking-wider">Judul Surat</th>
                         <th class="text-left px-6 py-3.5 text-[10px] font-extrabold text-white uppercase tracking-wider">Nomor Surat</th>
-                        <th class="text-left px-6 py-3.5 text-[10px] font-extrabold text-white uppercase tracking-wider">Kategori Surat</th>
+                        <th class="text-left px-6 py-3.5 text-[10px] font-extrabold text-white uppercase tracking-wider">Alur Pengajuan</th>
                         <th class="text-left px-6 py-3.5 text-[10px] font-extrabold text-white uppercase tracking-wider hidden md:table-cell">Pengaju</th>
                         <th class="text-left px-6 py-3.5 text-[10px] font-extrabold text-white uppercase tracking-wider hidden lg:table-cell">Waktu</th>
                         <th class="text-left px-6 py-3.5 text-[10px] font-extrabold text-white uppercase tracking-wider">Status</th>

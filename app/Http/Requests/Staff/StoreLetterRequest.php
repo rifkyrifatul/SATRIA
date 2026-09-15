@@ -61,8 +61,8 @@ class StoreLetterRequest extends FormRequest
             'title.min'      => 'Judul surat minimal :min karakter.',
             'title.max'      => 'Judul surat maksimal :max karakter.',
 
-            'category_id.required' => 'Kategori surat wajib dipilih.',
-            'category_id.exists'   => 'Kategori yang dipilih tidak valid.',
+            'category_id.required' => 'Alur pengajuan wajib dipilih.',
+            'category_id.exists'   => 'Alur pengajuan yang dipilih tidak valid.',
 
             'file.required'   => 'File surat wajib diunggah.',
             'file.file'       => 'Upload harus berupa file yang valid.',
@@ -81,7 +81,7 @@ class StoreLetterRequest extends FormRequest
     {
         return [
             'title'       => 'Judul Surat',
-            'category_id' => 'Kategori Surat',
+            'category_id' => 'Alur Pengajuan',
             'file'        => 'File Surat',
         ];
     }

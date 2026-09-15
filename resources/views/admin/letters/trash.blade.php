@@ -28,7 +28,7 @@
                     <tr>
                         <th class="text-center px-4 py-4 w-12">No</th>
                         <th class="px-6 py-4">Informasi Surat</th>
-                        <th class="px-6 py-4 hidden md:table-cell">Kategori & Status Asal</th>
+                        <th class="px-6 py-4 hidden md:table-cell">Alur Pengajuan & Status Asal</th>
                         <th class="px-6 py-4 hidden lg:table-cell">Dihapus Pada</th>
                         <th class="px-6 py-4 text-right">Tindakan Khusus</th>
                     </tr>

@@ -16,7 +16,7 @@ class CategoryController extends Controller
             abort_unless(
                 $user->role === 'admin' && $user->admin_level === 'admin_3',
                 403,
-                'Hanya Admin SETUM yang memiliki akses untuk kelola kategori.'
+                'Hanya Admin SETUM yang memiliki akses untuk kelola alur pengajuan.'
             );
         }
     }
@@ -57,7 +57,7 @@ class CategoryController extends Controller
         Category::create($validated);
 
         $prefix = auth()->user()->role === 'super_admin' ? 'super_admin' : 'admin';
-        return redirect()->route($prefix . '.categories.index')->with('success', 'Kategori berhasil ditambahkan.');
+        return redirect()->route($prefix . '.categories.index')->with('success', 'Alur pengajuan berhasil ditambahkan.');
     }
 
     public function edit(Category $category)
@@ -78,7 +78,7 @@ class CategoryController extends Controller
         $category->update($validated);
 
         $prefix = auth()->user()->role === 'super_admin' ? 'super_admin' : 'admin';
-        return redirect()->route($prefix . '.categories.index')->with('success', 'Kategori berhasil diperbarui.');
+        return redirect()->route($prefix . '.categories.index')->with('success', 'Alur pengajuan berhasil diperbarui.');
     }
 
     public function destroy(Category $category)
@@ -88,11 +88,11 @@ class CategoryController extends Controller
 
         if ($category->letters()->count() > 0) {
             return redirect()->route($prefix . '.categories.index')
-                ->with('error', 'Tidak dapat menghapus kategori yang sudah digunakan pada surat.');
+                ->with('error', 'Tidak dapat menghapus alur pengajuan yang sudah digunakan pada surat.');
         }
 
         $category->delete();
 
-        return redirect()->route($prefix . '.categories.index')->with('success', 'Kategori berhasil dihapus.');
+        return redirect()->route($prefix . '.categories.index')->with('success', 'Alur pengajuan berhasil dihapus.');
     }
 }

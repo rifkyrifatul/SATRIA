@@ -173,6 +173,11 @@ Route::middleware(['auth', 'verified', 'role:super_admin'])
         // Buku Agenda / Surat Masuk & Keluar (Read-Only untuk super_admin)
         Route::get('/mail-registries', [\App\Http\Controllers\Admin\MailRegistryController::class, 'index'])->name('mail_registries.index');
         Route::get('/mail-registries/{mailRegistry}/download', [\App\Http\Controllers\Admin\MailRegistryController::class, 'download'])->name('mail_registries.download');
+
+        // Berkas SPJ (Super Admin Access)
+        Route::resource('spjs', \App\Http\Controllers\Admin\SpjController::class)->except(['show']);
+        Route::get('/spjs/{spj}/download', [\App\Http\Controllers\Admin\SpjController::class, 'download'])->name('spjs.download');
+        Route::get('/spjs/{spj}/preview', [\App\Http\Controllers\Admin\SpjController::class, 'preview'])->name('spjs.preview');
     });
 
 /*
@@ -223,6 +228,11 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         // Renbut Approval (For PROGAR)
         Route::resource('renbuts', \App\Http\Controllers\Admin\RenbutApprovalController::class)->only(['index', 'show', 'update']);
         Route::get('/renbuts/{renbut}/download-attachment', [\App\Http\Controllers\Admin\RenbutApprovalController::class, 'downloadAttachment'])->name('renbuts.download_attachment');
+
+        // Upload & Berkas SPJ (Format PDF - Untuk Admin PROGAR & PEKAS)
+        Route::resource('spjs', \App\Http\Controllers\Admin\SpjController::class)->except(['show']);
+        Route::get('/spjs/{spj}/download', [\App\Http\Controllers\Admin\SpjController::class, 'download'])->name('spjs.download');
+        Route::get('/spjs/{spj}/preview', [\App\Http\Controllers\Admin\SpjController::class, 'preview'])->name('spjs.preview');
     });
 
 

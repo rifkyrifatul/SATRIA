@@ -3,8 +3,8 @@
         <div class="w-16 h-16 bg-slate-50 dark:bg-slate-900/50 border border-slate-100 rounded-full flex items-center justify-center mb-4 shadow-sm">
             <svg class="w-8 h-8 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
         </div>
-        <p class="text-sm font-bold text-slate-700 dark:text-slate-300">Tong sampah kategori kosong</p>
-        <p class="text-xs font-medium text-slate-500 mt-1">Tidak ada kategori yang dihapus saat ini.</p>
+        <p class="text-sm font-bold text-slate-700 dark:text-slate-300">Tong sampah alur pengajuan kosong</p>
+        <p class="text-xs font-medium text-slate-500 mt-1">Tidak ada alur pengajuan yang dihapus saat ini.</p>
     </div>
 @else
     <div class="overflow-x-auto">
@@ -12,7 +12,7 @@
             <thead>
                 <tr class="bg-indigo-600 dark:bg-indigo-800">
                     <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider w-16 text-center">No</th>
-                    <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider">Kategori</th>
+                    <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider">Alur Pengajuan</th>
                     <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider">Dihapus Pada</th>
                     <th class="px-6 py-4 text-xs font-extrabold text-white uppercase tracking-wider text-right">Aksi</th>
                 </tr>

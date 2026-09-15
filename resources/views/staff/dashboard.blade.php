@@ -72,7 +72,7 @@
                         <form action="{{ route('staff.dashboard') }}" method="GET" class="w-full sm:w-auto">
                             <select name="category_id" onchange="this.form.submit()"
                                     class="w-full text-xs font-bold border-slate-300 dark:border-slate-600 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-800 shadow-sm py-1.5 px-3">
-                                <option value="">Semua Kategori</option>
+                                <option value="">Semua Alur Pengajuan</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}
