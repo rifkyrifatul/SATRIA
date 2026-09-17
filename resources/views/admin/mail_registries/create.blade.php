@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Surat Masuk & Keluar')
+@section('title', 'Tambah Arsip Surat Eksternal')
 
 @section('content')
 <div class="max-w-4xl mx-auto space-y-6">

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'ARSIP SURAT')
+@section('title', 'ARSIP SURAT INTERNAL')
 
 @section('content')
 <div class="max-w-7xl mx-auto space-y-6">

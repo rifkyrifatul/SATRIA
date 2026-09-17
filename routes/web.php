@@ -63,6 +63,10 @@ Route::middleware(['auth', 'verified', 'role:staff'])
         Route::get('/dashboard', [StaffDashboardController::class, 'index'])
             ->name('dashboard');
 
+        // ── Tracking Posisi Surat ─────────────────────────────────────────
+        Route::get('/posisi-surat', [StaffLetterController::class, 'tracking'])->name('tracking.index');
+        Route::get('/posisi-surat/{letter}', [StaffLetterController::class, 'trackingShow'])->name('tracking.show');
+
         // ── Manajemen Surat Staff ──────────────────────────────────────────
         // Resource routes: index, create, store, show, edit, update, destroy
         Route::resource('letters', StaffLetterController::class);
@@ -117,6 +121,8 @@ Route::middleware(['auth', 'verified', 'role:super_admin'])
     ->group(function () {
         // Dashboard Global
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/posisi-surat', [AdminLetterController::class, 'tracking'])->name('tracking.index');
+        Route::get('/posisi-surat/{letter}', [AdminLetterController::class, 'trackingShow'])->name('tracking.show');
 
         // Manajemen Surat (Read Only untuk super_admin, karena tidak review)
         Route::resource('letters', AdminLetterController::class)->only(['index', 'show']);
@@ -191,6 +197,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])
     ->group(function () {
         // Dashboard Reviewer
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/posisi-surat', [AdminLetterController::class, 'tracking'])->name('tracking.index');
+        Route::get('/posisi-surat/{letter}', [AdminLetterController::class, 'trackingShow'])->name('tracking.show');
         Route::get('/reviews', [\App\Http\Controllers\Admin\LetterReviewController::class, 'index'])->name('reviews.index');
         Route::get('/reviews/history', [\App\Http\Controllers\Admin\LetterReviewController::class, 'history'])->name('reviews.history');
 

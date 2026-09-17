@@ -751,4 +751,64 @@ class LetterController extends Controller
             );
         }
     }
+
+    /**
+     * GET /admin/posisi-surat or /super-admin/posisi-surat
+     *
+     * Halaman khusus tracking posisi & alur persetujuan surat pengajuan untuk Admin/Super Admin.
+     * Langsung mengarahkan ke tampilan detail tracking surat terbaru.
+     */
+    public function tracking(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $user = $request->user() ?? auth()->user();
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        $isSuperAdmin = $user->isSuperAdmin();
+        $isAdmin3 = $user->admin_level === 'admin_3';
+
+        $query = Letter::with(['category', 'creator.division', 'logs', 'attachments'])->latest();
+
+        if (!$isSuperAdmin && !$isAdmin3) {
+            $query->whereHas('category', function($q) {
+                $q->where('review_type', '!=', 'langsung_admin_3')->orWhereNull('review_type');
+            });
+        }
+
+        $latestLetter = $query->first();
+        $routePrefix = $isSuperAdmin ? 'super_admin' : 'admin';
+
+        if ($latestLetter) {
+            return redirect()->route("{$routePrefix}.tracking.show", $latestLetter);
+        }
+
+        return redirect()->route("{$routePrefix}.dashboard")->with('info', 'Belum ada surat yang tersedia untuk di-track.');
+    }
+
+    /**
+     * GET /admin/posisi-surat/{letter} or /super-admin/posisi-surat/{letter}
+     *
+     * Tampilkan detail tracking posisi surat untuk Admin / Super Admin.
+     */
+    public function trackingShow(Request $request, Letter $letter): View
+    {
+        $user = $request->user() ?? auth()->user();
+        abort_if(!$user, 403);
+        $this->authorizeVisibility($user, $letter);
+
+        $letter->load(['logs.user', 'creator.division', 'updater', 'category', 'attachments']);
+
+        $isSuperAdmin = $user->isSuperAdmin();
+        $isAdmin3 = $user->admin_level === 'admin_3';
+        $query = Letter::latest();
+        if (!$isSuperAdmin && !$isAdmin3) {
+            $query->whereHas('category', function($q) {
+                $q->where('review_type', '!=', 'langsung_admin_3')->orWhereNull('review_type');
+            });
+        }
+        $allLetters = $query->get();
+
+        return view('admin.letters.tracking_show', compact('letter', 'allLetters'));
+    }
 }

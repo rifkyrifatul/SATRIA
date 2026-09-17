@@ -214,19 +214,9 @@ class LetterController extends Controller
      * Tampilkan detail surat beserta seluruh riwayat log aktivitasnya.
      * Staff hanya bisa melihat surat miliknya sendiri.
      */
-    public function show(Request $request, Letter $letter): View
+    public function show(Request $request, Letter $letter): RedirectResponse
     {
-        // Authorization: surat harus milik staff yang sedang login
-        abort_if(
-            $letter->created_by !== $request->user()->id,
-            403,
-            'Anda tidak berhak mengakses surat ini.'
-        );
-
-        // Eager load semua log beserta info user yang melakukan aksi
-        $letter->load(['logs.user', 'creator', 'updater']);
-
-        return view('staff.letters.show', compact('letter'));
+        return redirect()->route('staff.tracking.show', $letter);
     }
 
     // =========================================================================
@@ -627,5 +617,48 @@ class LetterController extends Controller
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::warning("Broadcast failed: " . $e->getMessage());
         }
+    }
+
+    /**
+     * GET /staff/posisi-surat
+     *
+     * Halaman khusus tracking posisi & alur persetujuan surat pengajuan milik staff.
+     * Langsung mengarahkan ke tampilan detail tracking surat terbaru.
+     */
+    public function tracking(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $user = $request->user() ?? auth()->user();
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        $latestLetter = Letter::where('created_by', $user->id)->latest()->first();
+
+        if ($latestLetter) {
+            return redirect()->route('staff.tracking.show', $latestLetter);
+        }
+
+        return redirect()->route('staff.letters.create')->with('info', 'Belum ada surat yang diajukan. Silakan ajukan surat terlebih dahulu.');
+    }
+
+    /**
+     * GET /staff/posisi-surat/{letter}
+     *
+     * Tampilkan detail tracking posisi surat di dalam menu Posisi Surat.
+     */
+    public function trackingShow(Request $request, Letter $letter): View
+    {
+        $user = $request->user() ?? auth()->user();
+
+        abort_if(
+            !$user || $letter->created_by !== $user->id,
+            403,
+            'Anda tidak berhak mengakses surat ini.'
+        );
+
+        $letter->load(['logs.user', 'creator', 'updater', 'category', 'attachments']);
+        $allLetters = Letter::where('created_by', $user->id)->latest()->get();
+
+        return view('staff.letters.tracking_show', compact('letter', 'allLetters'));
     }
 }

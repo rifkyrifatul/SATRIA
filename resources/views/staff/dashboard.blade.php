@@ -104,7 +104,7 @@
                                         <div class="flex-1 min-w-0">
                                             <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                                                 <div class="min-w-0">
-                                                    <a href="{{ route('staff.letters.show', $letter) }}" class="text-base font-extrabold text-slate-900 dark:text-white truncate group-hover:text-indigo-600 transition-colors before:absolute before:inset-0 block">{{ $letter->title }}</a>
+                                                    <a href="{{ route('staff.tracking.show', $letter) }}" class="text-base font-extrabold text-slate-900 dark:text-white truncate group-hover:text-indigo-600 transition-colors before:absolute before:inset-0 block">{{ $letter->title }}</a>
                                                     <p class="text-xs font-medium text-slate-500 mt-1 truncate">
                                                         @if($letter->letter_number)
                                                             <span class="text-indigo-600 font-bold bg-indigo-50 dark:bg-indigo-900/30 px-1.5 py-0.5 rounded border border-indigo-100 dark:border-indigo-800">{{ $letter->letter_number }}</span>
@@ -124,7 +124,7 @@
                                                 <x-status-badge :status="$letter->status" />
                                                 
 
-                                                <a href="{{ route('staff.letters.show', $letter) }}" 
+                                                <a href="{{ route('staff.tracking.show', $letter) }}" 
                                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 transition-colors shadow-sm ml-auto">
                                                     Detail
                                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
