@@ -90,6 +90,7 @@ Route::middleware(['auth', 'verified', 'role:staff'])
 
         // Arsip Surat Staff
         Route::get('/archives', [\App\Http\Controllers\Staff\ArchiveController::class, 'index'])->name('archives.index');
+        Route::delete('/archives/{letter}', [\App\Http\Controllers\Staff\ArchiveController::class, 'destroy'])->name('archives.destroy');
 
         // Tong Sampah Staff
         Route::prefix('trash')->name('trash.')->group(function () {
@@ -175,10 +176,19 @@ Route::middleware(['auth', 'verified', 'role:super_admin'])
 
         // Arsip Surat
         Route::get('/archives', [\App\Http\Controllers\Admin\ArchiveController::class, 'index'])->name('archives.index');
+        Route::get('/archives/recap/pdf', [\App\Http\Controllers\Admin\ArchiveController::class, 'exportMonthlyPdf'])->name('archives.recap_pdf');
+        Route::get('/archives/recap/excel', [\App\Http\Controllers\Admin\ArchiveController::class, 'exportMonthlyExcel'])->name('archives.recap_excel');
+        Route::delete('/archives/{letter}', [\App\Http\Controllers\Admin\ArchiveController::class, 'destroy'])->name('archives.destroy');
 
-        // Buku Agenda / Surat Masuk & Keluar (Read-Only untuk super_admin)
-        Route::get('/mail-registries', [\App\Http\Controllers\Admin\MailRegistryController::class, 'index'])->name('mail_registries.index');
+        // Buku Agenda / Surat Masuk & Keluar
+        Route::get('/mail-registries/recap/pdf', [\App\Http\Controllers\Admin\MailRegistryController::class, 'exportMonthlyPdf'])->name('mail_registries.recap_pdf');
+        Route::get('/mail-registries/recap/excel', [\App\Http\Controllers\Admin\MailRegistryController::class, 'exportMonthlyExcel'])->name('mail_registries.recap_excel');
+        Route::resource('mail-registries', \App\Http\Controllers\Admin\MailRegistryController::class)
+            ->names('mail_registries')
+            ->except(['show']);
         Route::get('/mail-registries/{mailRegistry}/download', [\App\Http\Controllers\Admin\MailRegistryController::class, 'download'])->name('mail_registries.download');
+        Route::get('/mail-registries/{mailRegistry}/disposition', [\App\Http\Controllers\Admin\MailRegistryController::class, 'dispositionForm'])->name('mail_registries.disposition');
+        Route::post('/mail-registries/{mailRegistry}/disposition', [\App\Http\Controllers\Admin\MailRegistryController::class, 'storeDisposition'])->name('mail_registries.disposition.store');
 
         // Berkas SPJ (Super Admin Access)
         Route::resource('spjs', \App\Http\Controllers\Admin\SpjController::class)->except(['show']);
@@ -224,8 +234,13 @@ Route::middleware(['auth', 'verified', 'role:admin'])
 
         // Arsip Surat
         Route::get('/archives', [\App\Http\Controllers\Admin\ArchiveController::class, 'index'])->name('archives.index');
+        Route::get('/archives/recap/pdf', [\App\Http\Controllers\Admin\ArchiveController::class, 'exportMonthlyPdf'])->name('archives.recap_pdf');
+        Route::get('/archives/recap/excel', [\App\Http\Controllers\Admin\ArchiveController::class, 'exportMonthlyExcel'])->name('archives.recap_excel');
+        Route::delete('/archives/{letter}', [\App\Http\Controllers\Admin\ArchiveController::class, 'destroy'])->name('archives.destroy');
 
         // Buku Agenda / Surat Masuk & Keluar (Full Access untuk Admin SETUM, Read-Only untuk admin lain)
+        Route::get('/mail-registries/recap/pdf', [\App\Http\Controllers\Admin\MailRegistryController::class, 'exportMonthlyPdf'])->name('mail_registries.recap_pdf');
+        Route::get('/mail-registries/recap/excel', [\App\Http\Controllers\Admin\MailRegistryController::class, 'exportMonthlyExcel'])->name('mail_registries.recap_excel');
         Route::resource('mail-registries', \App\Http\Controllers\Admin\MailRegistryController::class)
             ->names('mail_registries')
             ->except(['show']);
@@ -241,6 +256,17 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::resource('spjs', \App\Http\Controllers\Admin\SpjController::class)->except(['show']);
         Route::get('/spjs/{spj}/download', [\App\Http\Controllers\Admin\SpjController::class, 'download'])->name('spjs.download');
         Route::get('/spjs/{spj}/preview', [\App\Http\Controllers\Admin\SpjController::class, 'preview'])->name('spjs.preview');
+
+        // Tong Sampah Admin
+        Route::prefix('trash')->name('trash.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\SuperAdminTrashController::class, 'index'])->name('index');
+            Route::put('/letters/{id}/restore', [\App\Http\Controllers\Admin\SuperAdminTrashController::class, 'restoreLetter'])->name('letters.restore');
+            Route::delete('/letters/{id}', [\App\Http\Controllers\Admin\SuperAdminTrashController::class, 'forceDeleteLetter'])->name('letters.force_delete');
+            Route::put('/templates/{id}/restore', [\App\Http\Controllers\Admin\SuperAdminTrashController::class, 'restoreTemplate'])->name('templates.restore');
+            Route::delete('/templates/{id}', [\App\Http\Controllers\Admin\SuperAdminTrashController::class, 'forceDeleteTemplate'])->name('templates.force_delete');
+            Route::put('/categories/{id}/restore', [\App\Http\Controllers\Admin\SuperAdminTrashController::class, 'restoreCategory'])->name('categories.restore');
+            Route::delete('/categories/{id}', [\App\Http\Controllers\Admin\SuperAdminTrashController::class, 'forceDeleteCategory'])->name('categories.force_delete');
+        });
     });
 
 

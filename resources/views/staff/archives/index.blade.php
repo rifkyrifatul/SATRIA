@@ -105,6 +105,13 @@
                                     <a href="{{ route('staff.letters.download', $letter) }}" title="Unduh" class="p-2 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 rounded-lg text-emerald-600 hover:text-white hover:bg-emerald-600 hover:border-emerald-600 transition-colors shadow-sm">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                                     </a>
+                                    <form action="{{ route('staff.archives.destroy', $letter) }}" method="POST" class="inline" onsubmit="return confirmDelete(event, 'Yakin ingin menghapus surat ini dari arsip? Surat akan dipindahkan ke Tong Sampah.');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" title="Hapus dari Arsip" class="p-2 bg-rose-50 dark:bg-rose-900/30 border border-rose-200 dark:border-rose-800 rounded-lg text-rose-600 hover:text-white hover:bg-rose-600 hover:border-rose-600 transition-colors shadow-sm">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>

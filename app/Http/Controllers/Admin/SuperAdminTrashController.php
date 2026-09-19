@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 
 class SuperAdminTrashController extends Controller
 {
+    private function getRedirectRoute(): string
+    {
+        return auth()->user()->isSuperAdmin() ? 'super_admin.trash.index' : 'admin.trash.index';
+    }
+
     public function index(Request $request)
     {
         $tab = $request->query('tab', 'letters');
@@ -39,55 +44,55 @@ class SuperAdminTrashController extends Controller
     {
         $letter = Letter::onlyTrashed()->findOrFail($id);
         $letter->restore();
-        return redirect()->route('super_admin.trash.index', ['tab' => 'letters'])->with('success', 'Surat berhasil dipulihkan.');
+        return redirect()->route($this->getRedirectRoute(), ['tab' => 'letters'])->with('success', 'Surat berhasil dipulihkan.');
     }
 
     public function forceDeleteLetter($id)
     {
         $letter = Letter::onlyTrashed()->with('attachments')->findOrFail($id);
         $letter->forceDelete();
-        return redirect()->route('super_admin.trash.index', ['tab' => 'letters'])->with('success', 'Surat beserta seluruh file riwayatnya telah dihapus permanen.');
+        return redirect()->route($this->getRedirectRoute(), ['tab' => 'letters'])->with('success', 'Surat beserta seluruh file riwayatnya telah dihapus permanen.');
     }
 
     public function restoreTemplate($id)
     {
         $template = LetterTemplate::onlyTrashed()->findOrFail($id);
         $template->restore();
-        return redirect()->route('super_admin.trash.index', ['tab' => 'templates'])->with('success', 'Template surat berhasil dipulihkan.');
+        return redirect()->route($this->getRedirectRoute(), ['tab' => 'templates'])->with('success', 'Template surat berhasil dipulihkan.');
     }
 
     public function forceDeleteTemplate($id)
     {
         $template = LetterTemplate::onlyTrashed()->findOrFail($id);
         $template->forceDelete();
-        return redirect()->route('super_admin.trash.index', ['tab' => 'templates'])->with('success', 'Template surat dan filenya berhasil dihapus permanen.');
+        return redirect()->route($this->getRedirectRoute(), ['tab' => 'templates'])->with('success', 'Template surat dan filenya berhasil dihapus permanen.');
     }
 
     public function restoreUser($id)
     {
         $user = User::onlyTrashed()->findOrFail($id);
         $user->restore();
-        return redirect()->route('super_admin.trash.index', ['tab' => 'users'])->with('success', 'Pengguna berhasil dipulihkan.');
+        return redirect()->route($this->getRedirectRoute(), ['tab' => 'users'])->with('success', 'Pengguna berhasil dipulihkan.');
     }
 
     public function forceDeleteUser($id)
     {
         $user = User::onlyTrashed()->findOrFail($id);
         $user->forceDelete();
-        return redirect()->route('super_admin.trash.index', ['tab' => 'users'])->with('success', 'Pengguna berhasil dihapus permanen.');
+        return redirect()->route($this->getRedirectRoute(), ['tab' => 'users'])->with('success', 'Pengguna berhasil dihapus permanen.');
     }
 
     public function restoreCategory($id)
     {
         $category = Category::onlyTrashed()->findOrFail($id);
         $category->restore();
-        return redirect()->route('super_admin.trash.index', ['tab' => 'categories'])->with('success', 'Alur pengajuan berhasil dipulihkan.');
+        return redirect()->route($this->getRedirectRoute(), ['tab' => 'categories'])->with('success', 'Alur pengajuan berhasil dipulihkan.');
     }
 
     public function forceDeleteCategory($id)
     {
         $category = Category::onlyTrashed()->findOrFail($id);
         $category->forceDelete();
-        return redirect()->route('super_admin.trash.index', ['tab' => 'categories'])->with('success', 'Alur pengajuan berhasil dihapus permanen.');
+        return redirect()->route($this->getRedirectRoute(), ['tab' => 'categories'])->with('success', 'Alur pengajuan berhasil dihapus permanen.');
     }
 }

@@ -10,9 +10,25 @@
             <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Daftar Surat Terdaftar</h1>
             <p class="text-sm text-slate-500 mt-1">Daftar rekapan surat masuk dan surat keluar.</p>
         </div>
-        @if(Auth::user()->isAdmin() && Auth::user()->admin_level === 'admin_3')
-        <div>
-            <a href="{{ route('admin.mail_registries.create') }}" class="px-5 py-2.5 text-sm font-bold bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors shadow-sm inline-flex items-center gap-2">
+        @if(Auth::user()->isSuperAdmin() || (Auth::user()->isAdmin() && Auth::user()->admin_level === 'admin_3'))
+        <div class="flex flex-wrap items-center gap-2">
+            <a href="{{ (Auth::user()->isSuperAdmin() ? route('super_admin.mail_registries.recap_pdf') : route('admin.mail_registries.recap_pdf')) . '?' . http_build_query(request()->all()) }}"
+               class="px-4 py-2.5 text-sm font-bold bg-rose-600 hover:bg-rose-700 text-white rounded-xl transition-all shadow-sm flex items-center gap-2"
+               title="Unduh Rekap Bulanan Format PDF">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+                Rekap PDF
+            </a>
+            <a href="{{ (Auth::user()->isSuperAdmin() ? route('super_admin.mail_registries.recap_excel') : route('admin.mail_registries.recap_excel')) . '?' . http_build_query(request()->all()) }}"
+               class="px-4 py-2.5 text-sm font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition-all shadow-sm flex items-center gap-2"
+               title="Unduh Rekap Bulanan Format Excel/CSV">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                Rekap Excel
+            </a>
+            <a href="{{ Auth::user()->isSuperAdmin() ? route('super_admin.mail_registries.create') : route('admin.mail_registries.create') }}" class="px-5 py-2.5 text-sm font-bold bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors shadow-sm inline-flex items-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 Tambah Surat Baru
             </a>
@@ -21,7 +37,7 @@
     </div>
 
     {{-- Filter Bar --}}
-    <form method="GET" action="{{ route('admin.mail_registries.index') }}"
+    <form method="GET" action="{{ Auth::user()->isSuperAdmin() ? route('super_admin.mail_registries.index') : route('admin.mail_registries.index') }}"
           class="flex flex-col md:flex-row gap-3 bg-white dark:bg-slate-800 p-4 rounded-xl border-2 border-slate-300 dark:border-slate-600 shadow-sm mb-6">
         
         {{-- Search --}}
@@ -62,7 +78,7 @@
 
         <div class="flex gap-2">
             @if(request('search') || request('type') || request('month') || request('year'))
-                <a href="{{ route('admin.mail_registries.index') }}" class="px-5 py-2.5 text-sm font-bold text-slate-600 hover:text-slate-900 border border-slate-200 rounded-xl bg-white hover:bg-slate-100 flex items-center shadow-sm">Reset</a>
+                <a href="{{ Auth::user()->isSuperAdmin() ? route('super_admin.mail_registries.index') : route('admin.mail_registries.index') }}" class="px-5 py-2.5 text-sm font-bold text-slate-600 hover:text-slate-900 border border-slate-200 rounded-xl bg-white hover:bg-slate-100 flex items-center shadow-sm">Reset</a>
             @endif
             <button type="submit" class="px-5 py-2.5 text-sm font-bold bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-colors shadow-sm">Filter</button>
         </div>
@@ -115,25 +131,25 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center justify-end gap-2">
-                                    <a href="{{ route('admin.mail_registries.download', $mail) }}"
+                                    <a href="{{ Auth::user()->isSuperAdmin() ? route('super_admin.mail_registries.download', $mail) : route('admin.mail_registries.download', $mail) }}"
                                        onclick="Toast.fire({icon: 'success', title: 'File berhasil diunduh!'})"
                                        class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 hover:text-white hover:bg-emerald-600 transition-all shadow-sm"
                                        title="Unduh Surat">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                                     </a>
                                     
-                                    @if(Auth::user()->isAdmin() && Auth::user()->admin_level === 'admin_3')
-                                    <a href="{{ route('admin.mail_registries.disposition', $mail) }}"
+                                    @if(Auth::user()->isSuperAdmin() || (Auth::user()->isAdmin() && Auth::user()->admin_level === 'admin_3'))
+                                    <a href="{{ Auth::user()->isSuperAdmin() ? route('super_admin.mail_registries.disposition', $mail) : route('admin.mail_registries.disposition', $mail) }}"
                                        class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 hover:text-white hover:bg-indigo-600 transition-all shadow-sm"
                                        title="Disposisi Surat">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                                     </a>
-                                    <a href="{{ route('admin.mail_registries.edit', $mail) }}"
+                                    <a href="{{ Auth::user()->isSuperAdmin() ? route('super_admin.mail_registries.edit', $mail) : route('admin.mail_registries.edit', $mail) }}"
                                        class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-amber-50 text-amber-600 hover:text-white hover:bg-amber-600 transition-all shadow-sm"
                                        title="Edit Data">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                     </a>
-                                    <form action="{{ route('admin.mail_registries.destroy', $mail) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus surat ini?');">
+                                    <form action="{{ Auth::user()->isSuperAdmin() ? route('super_admin.mail_registries.destroy', $mail) : route('admin.mail_registries.destroy', $mail) }}" method="POST" class="inline" onsubmit="return confirmDelete(event, 'Yakin ingin menghapus surat ini dari Buku Agenda?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-rose-50 text-rose-600 hover:text-white hover:bg-rose-600 transition-all shadow-sm" title="Hapus Data">

@@ -7,6 +7,9 @@ use App\Models\MailRegistry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Carbon\Carbon;
 
 class MailRegistryController extends Controller
 {
@@ -15,32 +18,77 @@ class MailRegistryController extends Controller
 
     public function index(Request $request)
     {
-        $query = MailRegistry::with('uploader')->latest('date');
-
-        if ($request->filled('type') && in_array($request->type, ['masuk', 'keluar'])) {
-            $query->where('type', $request->type);
-        }
-
-        if ($request->filled('year')) {
-            $query->whereYear('date', $request->year);
-        }
-
-        if ($request->filled('month')) {
-            $query->whereMonth('date', $request->month);
-        }
-
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('reference_number', 'like', "%{$search}%")
-                  ->orWhere('subject', 'like', "%{$search}%")
-                  ->orWhere('origin_destination', 'like', "%{$search}%");
-            });
-        }
-
-        $mailRegistries = $query->paginate(15)->withQueryString();
+        $mailRegistries = $this->buildRecapQuery($request)->paginate(15)->withQueryString();
 
         return view('admin.mail_registries.index', compact('mailRegistries'));
+    }
+
+    /**
+     * Export rekap agenda surat eksternal bulanan ke PDF.
+     */
+    public function exportMonthlyPdf(Request $request)
+    {
+        $mailRegistries = $this->buildRecapQuery($request)->get();
+
+        $monthNum = $request->filled('month') ? (int)$request->month : date('n');
+        $yearNum  = $request->filled('year') ? (int)$request->year : date('Y');
+
+        $monthName = Carbon::createFromDate($yearNum, $monthNum, 1)->locale('id')->isoFormat('MMMM');
+
+        $pdf = Pdf::loadView('admin.mail_registries.recap_pdf', compact('mailRegistries', 'monthName', 'yearNum'))
+                  ->setPaper('a4', 'landscape');
+
+        $fileName = 'rekap_surat_eksternal_' . strtolower($monthName) . '_' . $yearNum . '.pdf';
+
+        return $pdf->download($fileName);
+    }
+
+    /**
+     * Export rekap agenda surat eksternal bulanan ke Excel / CSV.
+     */
+    public function exportMonthlyExcel(Request $request): StreamedResponse
+    {
+        $mailRegistries = $this->buildRecapQuery($request)->get();
+
+        $monthNum = $request->filled('month') ? (int)$request->month : date('n');
+        $yearNum  = $request->filled('year') ? (int)$request->year : date('Y');
+
+        $monthName = Carbon::createFromDate($yearNum, $monthNum, 1)->locale('id')->isoFormat('MMMM');
+
+        $fileName = 'rekap_surat_eksternal_' . strtolower($monthName) . '_' . $yearNum . '.csv';
+
+        $headers = [
+            "Content-type"        => "text/csv; charset=UTF-8",
+            "Content-Disposition" => "attachment; filename={$fileName}",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        $columns = ['No', 'Jenis Surat', 'Nomor Surat', 'Perihal', 'Asal / Tujuan', 'Tanggal Surat', 'Pengunggah'];
+
+        $callback = function() use ($mailRegistries, $columns) {
+            $file = fopen('php://output', 'w');
+            fputs($file, "\xEF\xBB\xBF");
+            fputcsv($file, $columns, ',');
+
+            foreach ($mailRegistries as $index => $mail) {
+                $row = [
+                    $index + 1,
+                    $mail->type === 'masuk' ? 'Surat Masuk' : 'Surat Keluar',
+                    $mail->reference_number,
+                    $mail->subject,
+                    $mail->origin_destination,
+                    $mail->date ? $mail->date->format('Y-m-d') : '-',
+                    $mail->uploader->name ?? '-'
+                ];
+                fputcsv($file, $row, ',');
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 
     public function create()
@@ -78,7 +126,8 @@ class MailRegistryController extends Controller
 
         MailRegistry::create($validated);
 
-        return redirect()->route('admin.mail_registries.index')->with('success', 'Surat berhasil ditambahkan ke Buku Agenda.');
+        $route = $request->user()->isSuperAdmin() ? 'super_admin.mail_registries.index' : 'admin.mail_registries.index';
+        return redirect()->route($route)->with('success', 'Surat berhasil ditambahkan ke Buku Agenda.');
     }
 
     public function edit(MailRegistry $mailRegistry)
@@ -114,7 +163,8 @@ class MailRegistryController extends Controller
 
         $mailRegistry->update($validated);
 
-        return redirect()->route('admin.mail_registries.index')->with('success', 'Data surat berhasil diperbarui.');
+        $route = $request->user()->isSuperAdmin() ? 'super_admin.mail_registries.index' : 'admin.mail_registries.index';
+        return redirect()->route($route)->with('success', 'Data surat berhasil diperbarui.');
     }
 
     public function destroy(MailRegistry $mailRegistry)
@@ -127,7 +177,8 @@ class MailRegistryController extends Controller
 
         $mailRegistry->delete();
 
-        return redirect()->route('admin.mail_registries.index')->with('success', 'Data surat berhasil dihapus.');
+        $route = request()->user()->isSuperAdmin() ? 'super_admin.mail_registries.index' : 'admin.mail_registries.index';
+        return redirect()->route($route)->with('success', 'Data surat berhasil dihapus.');
     }
 
     public function download(MailRegistry $mailRegistry)
@@ -189,15 +240,47 @@ class MailRegistryController extends Controller
             }
         }
 
-        return redirect()->route('admin.mail_registries.index')->with('success', 'Surat berhasil didisposisikan.');
+        $route = $request->user()->isSuperAdmin() ? 'super_admin.mail_registries.index' : 'admin.mail_registries.index';
+        return redirect()->route($route)->with('success', 'Surat berhasil didisposisikan.');
+    }
+
+    /**
+     * Helper untuk membuild query pencarian dan filter rekap agenda surat eksternal.
+     */
+    private function buildRecapQuery(Request $request)
+    {
+        $query = MailRegistry::with('uploader')->latest('date');
+
+        if ($request->filled('type') && in_array($request->type, ['masuk', 'keluar'])) {
+            $query->where('type', $request->type);
+        }
+
+        if ($request->filled('year')) {
+            $query->whereYear('date', $request->year);
+        }
+
+        if ($request->filled('month')) {
+            $query->whereMonth('date', $request->month);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('reference_number', 'like', "%{$search}%")
+                  ->orWhere('subject', 'like', "%{$search}%")
+                  ->orWhere('origin_destination', 'like', "%{$search}%");
+            });
+        }
+
+        return $query;
     }
 
     private function authorizeAdminSetum($user)
     {
         abort_unless(
-            $user->isAdmin() && $user->admin_level === 'admin_3',
+            $user->isSuperAdmin() || ($user->isAdmin() && $user->admin_level === 'admin_3'),
             403,
-            'Hanya Admin SETUM yang memiliki akses untuk mengelola data ini.'
+            'Hanya Admin SETUM atau Super Admin yang memiliki akses untuk mengelola data ini.'
         );
     }
 }

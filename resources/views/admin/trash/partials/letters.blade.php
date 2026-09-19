@@ -39,13 +39,13 @@
                         </td>
                         <td class="px-6 py-4 text-right">
                             <div class="flex items-center justify-end gap-2">
-                                <form action="{{ route('super_admin.trash.letters.restore', $letter->id) }}" method="POST">
+                                <form action="{{ route(Auth::user()->isSuperAdmin() ? 'super_admin.trash.letters.restore' : 'admin.trash.letters.restore', $letter->id) }}" method="POST">
                                     @csrf @method('PUT')
                                     <button type="submit" class="p-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-emerald-500 hover:bg-emerald-50 hover:text-emerald-600 transition-colors" title="Pulihkan">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg>
                                     </button>
                                 </form>
-                                <form action="{{ route('super_admin.trash.letters.force_delete', $letter->id) }}" method="POST" onsubmit="confirmDelete(event, 'Yakin hapus permanen? File surat akan ikut terhapus.');">
+                                <form action="{{ route(Auth::user()->isSuperAdmin() ? 'super_admin.trash.letters.force_delete' : 'admin.trash.letters.force_delete', $letter->id) }}" method="POST" onsubmit="confirmDelete(event, 'Yakin hapus permanen? File surat akan ikut terhapus.');">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="p-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-rose-500 hover:bg-rose-50 hover:text-rose-600 transition-colors" title="Hapus Permanen">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>

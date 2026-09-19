@@ -11,12 +11,18 @@
         </div>
     </div>
 
+    @php
+        $trashRoute = Auth::user()->isSuperAdmin() ? 'super_admin.trash.index' : 'admin.trash.index';
+    @endphp
+
     <!-- Tabs -->
     <div class="bg-white dark:bg-slate-800 p-2 rounded-xl border-2 border-slate-300 dark:border-slate-600 shadow-sm mb-6 flex flex-wrap gap-2">
-        <a href="{{ route('super_admin.trash.index', ['tab' => 'letters']) }}" class="px-5 py-2.5 text-sm font-bold rounded-xl transition-colors {{ $tab == 'letters' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700' }}">Surat</a>
-        <a href="{{ route('super_admin.trash.index', ['tab' => 'templates']) }}" class="px-5 py-2.5 text-sm font-bold rounded-xl transition-colors {{ $tab == 'templates' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700' }}">Template Surat</a>
-        <a href="{{ route('super_admin.trash.index', ['tab' => 'users']) }}" class="px-5 py-2.5 text-sm font-bold rounded-xl transition-colors {{ $tab == 'users' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700' }}">Pengguna</a>
-        <a href="{{ route('super_admin.trash.index', ['tab' => 'categories']) }}" class="px-5 py-2.5 text-sm font-bold rounded-xl transition-colors {{ $tab == 'categories' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700' }}">Alur Pengajuan</a>
+        <a href="{{ route($trashRoute, ['tab' => 'letters']) }}" class="px-5 py-2.5 text-sm font-bold rounded-xl transition-colors {{ $tab == 'letters' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700' }}">Surat</a>
+        <a href="{{ route($trashRoute, ['tab' => 'templates']) }}" class="px-5 py-2.5 text-sm font-bold rounded-xl transition-colors {{ $tab == 'templates' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700' }}">Template Surat</a>
+        @if(Auth::user()->isSuperAdmin())
+        <a href="{{ route($trashRoute, ['tab' => 'users']) }}" class="px-5 py-2.5 text-sm font-bold rounded-xl transition-colors {{ $tab == 'users' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700' }}">Pengguna</a>
+        @endif
+        <a href="{{ route($trashRoute, ['tab' => 'categories']) }}" class="px-5 py-2.5 text-sm font-bold rounded-xl transition-colors {{ $tab == 'categories' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700' }}">Alur Pengajuan</a>
     </div>
 
     <!-- Content -->

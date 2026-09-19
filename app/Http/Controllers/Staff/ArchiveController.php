@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Staff;
 use App\Http\Controllers\Controller;
 use App\Models\Letter;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class ArchiveController extends Controller
@@ -35,5 +36,23 @@ class ArchiveController extends Controller
         $letters = $query->paginate(10)->withQueryString();
 
         return view('staff.archives.index', compact('letters'));
+    }
+
+    /**
+     * Hapus surat dari arsip staff (soft delete ke Tong Sampah).
+     */
+    public function destroy(Request $request, Letter $letter): RedirectResponse
+    {
+        abort_if(
+            $letter->created_by !== $request->user()->id,
+            403,
+            'Anda tidak berhak menghapus surat ini.'
+        );
+
+        $letter->delete();
+
+        return redirect()
+            ->route('staff.archives.index')
+            ->with('success', 'Surat berhasil dipindahkan ke Tong Sampah.');
     }
 }

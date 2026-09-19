@@ -5,14 +5,36 @@
 @section('content')
 <div class="max-w-7xl mx-auto space-y-6">
 
-    <div class="mb-6">
-        <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Dokumen Tersimpan</h1>
-        <p class="text-sm text-slate-500 mt-1">Arsip surat yang telah disetujui (Approved) secara final dan disimpan secara permanen.</p>
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+            <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Dokumen Tersimpan</h1>
+            <p class="text-sm text-slate-500 mt-1">Arsip surat yang telah disetujui (Approved) secara final dan disimpan secara permanen.</p>
+        </div>
+
+        {{-- Tombol Export Rekap Bulanan --}}
+        <div class="flex flex-wrap items-center gap-2">
+            <a href="{{ (Auth::user()->isSuperAdmin() ? route('super_admin.archives.recap_pdf') : route('admin.archives.recap_pdf')) . '?' . http_build_query(request()->all()) }}"
+               class="px-4 py-2.5 text-sm font-bold bg-rose-600 hover:bg-rose-700 text-white rounded-xl transition-all shadow-sm flex items-center gap-2"
+               title="Unduh Rekap Bulanan Format PDF">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+                Rekap PDF
+            </a>
+            <a href="{{ (Auth::user()->isSuperAdmin() ? route('super_admin.archives.recap_excel') : route('admin.archives.recap_excel')) . '?' . http_build_query(request()->all()) }}"
+               class="px-4 py-2.5 text-sm font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition-all shadow-sm flex items-center gap-2"
+               title="Unduh Rekap Bulanan Format Excel/CSV">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                Rekap Excel
+            </a>
+        </div>
     </div>
 
     {{-- ── Filter Bar ── --}}
     <form method="GET" action="{{ Auth::user()->isSuperAdmin() ? route('super_admin.archives.index') : route('admin.archives.index') }}"
-          class="flex flex-col sm:flex-row gap-3 bg-white dark:bg-slate-800 p-4 rounded-xl border-2 border-slate-300 dark:border-slate-600 shadow-sm mb-6">
+          class="flex flex-col lg:flex-row gap-3 bg-white dark:bg-slate-800 p-4 rounded-xl border-2 border-slate-300 dark:border-slate-600 shadow-sm mb-6">
         {{-- Search --}}
         <div class="relative flex-1">
             <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
@@ -26,8 +48,32 @@
                    class="w-full pl-10 pr-4 py-2.5 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 placeholder:text-slate-400 transition-colors">
         </div>
         
+        {{-- Filter Bulan --}}
+        <select name="month" class="w-full lg:w-36 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
+            <option value="">Semua Bulan</option>
+            @php
+                $months = [
+                    1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+                    5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+                    9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+                ];
+            @endphp
+            @foreach($months as $num => $name)
+                <option value="{{ $num }}" {{ request('month') == $num ? 'selected' : '' }}>{{ $name }}</option>
+            @endforeach
+        </select>
+
+        {{-- Filter Tahun --}}
+        <select name="year" class="w-full lg:w-32 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
+            <option value="">Semua Tahun</option>
+            @php $currentYear = date('Y'); @endphp
+            @for($y = $currentYear; $y >= $currentYear - 5; $y--)
+                <option value="{{ $y }}" {{ request('year') == $y ? 'selected' : '' }}>{{ $y }}</option>
+            @endfor
+        </select>
+
         {{-- Filter Alur Pengajuan --}}
-        <select name="category" class="w-full sm:w-48 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
+        <select name="category" class="w-full lg:w-44 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
             <option value="">Semua Alur Pengajuan</option>
             @foreach($categories as $category)
                 <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
@@ -37,7 +83,7 @@
         </select>
 
         {{-- Filter Divisi --}}
-        <select name="division" class="w-full sm:w-48 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
+        <select name="division" class="w-full lg:w-40 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
             <option value="">Semua Divisi</option>
             @foreach($divisions as $division)
                 <option value="{{ $division->id }}" {{ request('division') == $division->id ? 'selected' : '' }}>
@@ -46,14 +92,16 @@
             @endforeach
         </select>
 
-        @if(request('search') || request('category') || request('division'))
-            <a href="{{ Auth::user()->isSuperAdmin() ? route('super_admin.archives.index') : route('admin.archives.index') }}" class="px-5 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center shadow-sm transition-colors whitespace-nowrap">Reset</a>
-        @endif
+        <div class="flex gap-2 whitespace-nowrap">
+            @if(request('search') || request('month') || request('year') || request('category') || request('division'))
+                <a href="{{ Auth::user()->isSuperAdmin() ? route('super_admin.archives.index') : route('admin.archives.index') }}" class="px-5 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center shadow-sm transition-colors">Reset</a>
+            @endif
 
-        <button type="submit"
-                class="px-5 py-2.5 text-sm font-bold bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-colors shadow-sm whitespace-nowrap">
-            Cari & Filter
-        </button>
+            <button type="submit"
+                    class="px-5 py-2.5 text-sm font-bold bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-colors shadow-sm">
+                Cari & Filter
+            </button>
+        </div>
     </form>
 
     {{-- ── Tabel ── --}}
@@ -163,6 +211,20 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                                         </svg>
                                     </a>
+                                    @endif
+                                    @if(Auth::user()->isSuperAdmin() || (Auth::user()->isAdmin() && Auth::user()->admin_level === 'admin_3'))
+                                    <form action="{{ Auth::user()->isSuperAdmin() ? route('super_admin.archives.destroy', $letter) : route('admin.archives.destroy', $letter) }}"
+                                          method="POST" class="inline" onsubmit="return confirmDelete(event, 'Yakin ingin menghapus surat ini dari arsip? Surat akan dipindahkan ke Tong Sampah.');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                                class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-rose-50 dark:bg-rose-900/30 border border-rose-200 dark:border-rose-800 text-rose-600 hover:text-white hover:bg-rose-600 hover:border-rose-600 transition-all shadow-sm"
+                                                title="Hapus dari Arsip">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </button>
+                                    </form>
                                     @endif
                                 </div>
                             </td>
