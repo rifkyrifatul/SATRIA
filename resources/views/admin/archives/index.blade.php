@@ -50,7 +50,7 @@
         
         {{-- Filter Bulan --}}
         <select name="month" class="w-full md:w-32 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
-            <option value="">Semua Bulan</option>
+            <option value="">Semua Bulan </option>
             @php
                 $months = [
                     1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
@@ -74,7 +74,7 @@
 
         {{-- Filter Alur Pengajuan --}}
         <select name="category" class="w-full md:w-36 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
-            <option value="">Semua Alur Pengajuan</option>
+            <option value="">Semua Alur Pengajuan </option>
             @foreach($categories as $category)
                 <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
                     {{ $category->name }}
@@ -84,7 +84,7 @@
 
         {{-- Filter Divisi --}}
         <select name="division" class="w-full md:w-36 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
-            <option value="">Semua Divisi</option>
+            <option value="">Semua Divisi </option>
             @foreach($divisions as $division)
                 <option value="{{ $division->id }}" {{ request('division') == $division->id ? 'selected' : '' }}>
                     {{ $division->name }}
