@@ -34,7 +34,7 @@
 
     {{-- ── Filter Bar ── --}}
     <form method="GET" action="{{ Auth::user()->isSuperAdmin() ? route('super_admin.archives.index') : route('admin.archives.index') }}"
-          class="flex flex-col lg:flex-row gap-3 bg-white dark:bg-slate-800 p-4 rounded-xl border-2 border-slate-300 dark:border-slate-600 shadow-sm mb-6">
+          class="flex flex-col md:flex-row gap-3 bg-white dark:bg-slate-800 p-4 rounded-xl border-2 border-slate-300 dark:border-slate-600 shadow-sm mb-6">
         {{-- Search --}}
         <div class="relative flex-1">
             <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
@@ -49,7 +49,7 @@
         </div>
         
         {{-- Filter Bulan --}}
-        <select name="month" class="w-full lg:w-36 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
+        <select name="month" class="w-full md:w-32 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
             <option value="">Semua Bulan</option>
             @php
                 $months = [
@@ -64,7 +64,7 @@
         </select>
 
         {{-- Filter Tahun --}}
-        <select name="year" class="w-full lg:w-32 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
+        <select name="year" class="w-full md:w-32 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
             <option value="">Semua Tahun</option>
             @php $currentYear = date('Y'); @endphp
             @for($y = $currentYear; $y >= $currentYear - 5; $y--)
@@ -73,7 +73,7 @@
         </select>
 
         {{-- Filter Alur Pengajuan --}}
-        <select name="category" class="w-full lg:w-44 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
+        <select name="category" class="w-full md:w-36 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
             <option value="">Semua Alur Pengajuan</option>
             @foreach($categories as $category)
                 <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
@@ -83,7 +83,7 @@
         </select>
 
         {{-- Filter Divisi --}}
-        <select name="division" class="w-full lg:w-40 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
+        <select name="division" class="w-full md:w-36 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
             <option value="">Semua Divisi</option>
             @foreach($divisions as $division)
                 <option value="{{ $division->id }}" {{ request('division') == $division->id ? 'selected' : '' }}>
@@ -99,7 +99,7 @@
 
             <button type="submit"
                     class="px-5 py-2.5 text-sm font-bold bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-colors shadow-sm">
-                Cari & Filter
+                Filter
             </button>
         </div>
     </form>
