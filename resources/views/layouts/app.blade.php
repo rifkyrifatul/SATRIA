@@ -45,6 +45,28 @@
         .swal2-container {
             z-index: 99999 !important;
         }
+        /* Sidebar mobile: fixed overlay */
+        @media (max-width: 639px) {
+            #app-sidebar {
+                position: fixed !important;
+                left: 0;
+                top: 0;
+                height: 100vh;
+                width: 16rem;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            #app-sidebar.sidebar-open {
+                transform: translateX(0);
+            }
+        }
+        /* Sidebar desktop */
+        @media (min-width: 640px) {
+            #app-sidebar {
+                position: relative;
+                height: 100%;
+            }
+        }
     </style>
     <script>
         window.authUser = {
@@ -56,7 +78,7 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 antialiased text-slate-600 dark:text-slate-300 flex h-screen overflow-hidden" 
     x-data="{ 
-        sidebarOpen: true, 
+        sidebarOpen: window.innerWidth >= 640, 
         profileOpen: false, 
         notifOpen: false,
         isDark: document.documentElement.classList.contains('dark'),
@@ -73,9 +95,17 @@
     }">
 
     <!-- ================= KIRI: STICKY SIDEBAR ================= -->
+    <!-- Mobile Overlay Backdrop -->
+    <div x-show="sidebarOpen" @click="sidebarOpen = false"
+        class="fixed inset-0 bg-black/50 z-20 sm:hidden" x-cloak></div>
+
     <aside 
-        class="bg-slate-950 text-slate-400 w-64 flex-shrink-0 flex flex-col h-full transition-all duration-300 relative z-20"
-        :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full absolute sm:relative sm:w-20'">
+        id="app-sidebar"
+        class="bg-slate-950 text-slate-400 flex-shrink-0 flex flex-col transition-all duration-300 z-30 sm:w-64"
+        :class="{
+            'sidebar-open': sidebarOpen,
+            'sm:w-20': !sidebarOpen
+        }">
         
         <!-- Logo Area -->
         <div class="h-16 flex items-center justify-between px-6 bg-slate-950 border-b border-slate-900/50">
