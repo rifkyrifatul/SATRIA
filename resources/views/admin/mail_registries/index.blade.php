@@ -53,28 +53,43 @@
         </div>
         
         {{-- Filter Jenis --}}
-        <select name="type" class="w-full md:w-32 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900/50">
-            <option value="">Semua Jenis</option>
-            <option value="masuk" {{ request('type') == 'masuk' ? 'selected' : '' }}>Surat Masuk</option>
-            <option value="keluar" {{ request('type') == 'keluar' ? 'selected' : '' }}>Surat Keluar</option>
-        </select>
+        <div class="relative w-full md:w-36">
+            <select name="type" class="w-full appearance-none pl-4 pr-9 py-2.5 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
+                <option value="">Semua Jenis</option>
+                <option value="masuk" {{ request('type') == 'masuk' ? 'selected' : '' }}>Surat Masuk</option>
+                <option value="keluar" {{ request('type') == 'keluar' ? 'selected' : '' }}>Surat Keluar</option>
+            </select>
+            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+        </div>
 
         {{-- Filter Bulan --}}
-        <select name="month" class="w-full md:w-32 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900/50">
-            <option value="">Semua Bulan</option>
-            @foreach(range(1, 12) as $m)
-                <option value="{{ $m }}" {{ request('month') == $m ? 'selected' : '' }}>{{ date('F', mktime(0, 0, 0, $m, 1)) }}</option>
-            @endforeach
-        </select>
+        <div class="relative w-full md:w-40">
+            <select name="month" class="w-full appearance-none pl-4 pr-9 py-2.5 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
+                <option value="">Semua Bulan</option>
+                @foreach(range(1, 12) as $m)
+                    <option value="{{ $m }}" {{ request('month') == $m ? 'selected' : '' }}>{{ date('F', mktime(0, 0, 0, $m, 1)) }}</option>
+                @endforeach
+            </select>
+            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+        </div>
 
         {{-- Filter Tahun --}}
-        <select name="year" class="w-full md:w-32 py-2.5 px-4 text-sm border border-slate-300 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900/50">
-            <option value="">Semua Tahun</option>
-            @php $currentYear = date('Y'); @endphp
-            @for($y = $currentYear; $y >= $currentYear - 5; $y--)
-                <option value="{{ $y }}" {{ request('year') == $y ? 'selected' : '' }}>{{ $y }}</option>
-            @endfor
-        </select>
+        <div class="relative w-full md:w-36">
+            <select name="year" class="w-full appearance-none pl-4 pr-9 py-2.5 text-sm border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 transition-colors">
+                <option value="">Semua Tahun</option>
+                @php $currentYear = date('Y'); @endphp
+                @for($y = $currentYear; $y >= $currentYear - 5; $y--)
+                    <option value="{{ $y }}" {{ request('year') == $y ? 'selected' : '' }}>{{ $y }}</option>
+                @endfor
+            </select>
+            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+        </div>
 
         <div class="flex gap-2">
             @if(request('search') || request('type') || request('month') || request('year'))
