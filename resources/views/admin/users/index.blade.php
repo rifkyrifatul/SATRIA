@@ -184,7 +184,7 @@
                                 <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                     <h3 class="text-base font-extrabold leading-6 text-slate-900 dark:text-white" id="modal-title">Reset Password Pengguna</h3>
                                     <div class="mt-2 text-sm text-slate-600 dark:text-slate-400 font-medium">
-                                        <p>Anda yakin ingin mereset kata sandi untuk <span class="font-bold text-slate-900 dark:text-white" x-text="userName"></span>? Kata sandi akan diubah menjadi <span class="bg-rose-50 text-rose-600 border border-rose-200 px-1.5 py-0.5 rounded font-bold">12345678</span>.</p>
+                                        <p>Anda yakin ingin mereset kata sandi untuk <span class="font-bold text-slate-900 dark:text-white" x-text="userName"></span>? Kata sandi akan diubah menjadi <span class="bg-rose-50 text-rose-600 border border-rose-200 px-1.5 py-0.5 rounded font-bold">@Password1_</span>.</p>
                                     </div>
                                 </div>
                             </div>

@@ -98,7 +98,7 @@
                         </div>
                         <div>
                             <p class="text-sm font-bold text-slate-800 dark:text-slate-200">Kata Sandi Otomatis</p>
-                            <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Pengguna baru akan menggunakan kata sandi bawaan sistem: <span class="font-mono bg-white dark:bg-slate-800 px-1.5 py-0.5 rounded font-bold text-indigo-600">12345678</span></p>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Pengguna baru akan menggunakan kata sandi bawaan sistem: <span class="font-mono bg-white dark:bg-slate-800 px-1.5 py-0.5 rounded font-bold text-indigo-600">@Password1_</span></p>
                             <p class="text-xs text-slate-500 mt-0.5">Harap sampaikan kata sandi ini kepada pengguna agar mereka dapat *login* dan menggantinya di menu Profil.</p>
                         </div>
                     </div>

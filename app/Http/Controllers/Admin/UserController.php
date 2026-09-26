@@ -12,6 +12,8 @@ use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
+    public const DEFAULT_PASSWORD = '@Password1_';
+
     /**
      * Display a listing of the resource.
      */
@@ -68,7 +70,7 @@ class UserController extends Controller
         $user = User::create([
             'name'                 => $request->name,
             'email'                => $request->email,
-            'password'             => Hash::make('12345678'),
+            'password'             => Hash::make(self::DEFAULT_PASSWORD),
             'role'                 => $request->role,
             'admin_level'          => $request->role === 'admin' ? $request->admin_level : null,
             'division_id'          => $request->role === 'staff' ? $request->division_id : null,
@@ -76,7 +78,7 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('super_admin.users.index')
-            ->with('success', 'User berhasil ditambahkan. Password default: 12345678');
+            ->with('success', 'User berhasil ditambahkan. Password default: ' . self::DEFAULT_PASSWORD);
     }
 
     public function destroy(User $user)
@@ -159,7 +161,7 @@ class UserController extends Controller
             return back()->with('error', 'Silakan ubah kata sandi Anda sendiri melalui menu Profil.');
         }
 
-        $defaultPassword = '12345678';
+        $defaultPassword = self::DEFAULT_PASSWORD;
         
         $user->password             = Hash::make($defaultPassword);
         $user->must_change_password = true; // Wajib ganti password setelah di-reset
