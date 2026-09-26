@@ -81,6 +81,7 @@
                                 class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl text-sm 
                                        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors
                                        @error('division_id') border-rose-300 focus:ring-rose-400 @enderror">
+                            <option value="" disabled {{ old('division_id') ? '' : 'selected' }}>Pilih Divisi</option>
                             @foreach($divisions as $division)
                                 <option value="{{ $division->id }}" {{ old('division_id') == $division->id ? 'selected' : '' }}>
                                     {{ $division->name }}
