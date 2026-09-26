@@ -288,9 +288,18 @@ Route::middleware('auth')->group(function () {
     // Notifications (sudah didefinisikan di grup global atas, hapus duplikat di sini)
 });
 
+// Jalankan skrip ini via browser setelah git push
+Route::get('/run-migrate', function () {
+    Artisan::call('migrate', ['--force' => true]);
+    return 'Migration database berhasil dijalankan!';
+});
+
 /*
 |--------------------------------------------------------------------------
 | Auth Routes (Login, Register, Reset Password — dari Breeze)
 |--------------------------------------------------------------------------
 */
 require __DIR__.'/auth.php';
+
+
+
