@@ -50,11 +50,13 @@ class DatabaseSeeder extends Seeder
             'Kesiswaan',
             'Pendidikan',
             'Administrasi',
+            'Bagian Umum',
             'CF2LT',
             'CLC',
             'LCBC',
             'HOCC',
             'EXCELSA',
+            
         ];
 
         foreach ($divisions as $divName) {
