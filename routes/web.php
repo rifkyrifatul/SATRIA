@@ -105,7 +105,7 @@ Route::middleware(['auth', 'verified', 'role:staff'])
         Route::get('/mail-registries/{mailRegistry}/download', [\App\Http\Controllers\Staff\MailRegistryController::class, 'download'])->name('mail_registries.download');
 
         // Renbut (Rencana Kebutuhan)
-        Route::resource('renbuts', \App\Http\Controllers\Staff\RenbutController::class)->except(['edit', 'update', 'destroy']);
+        Route::resource('renbuts', \App\Http\Controllers\Staff\RenbutController::class)->except(['edit', 'update']);
         Route::get('/renbuts/{renbut}/download-attachment', [\App\Http\Controllers\Staff\RenbutController::class, 'downloadAttachment'])->name('renbuts.download_attachment');
         Route::get('/renbuts/{renbut}/download-response', [\App\Http\Controllers\Staff\RenbutController::class, 'downloadResponse'])->name('renbuts.download_response');
     });
@@ -249,7 +249,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::post('/mail-registries/{mailRegistry}/disposition', [\App\Http\Controllers\Admin\MailRegistryController::class, 'storeDisposition'])->name('mail_registries.disposition.store');
 
         // Renbut Approval (For PROGAR)
-        Route::resource('renbuts', \App\Http\Controllers\Admin\RenbutApprovalController::class)->only(['index', 'show', 'update']);
+        Route::resource('renbuts', \App\Http\Controllers\Admin\RenbutApprovalController::class)->only(['index', 'show', 'update', 'destroy']);
         Route::get('/renbuts/{renbut}/download-attachment', [\App\Http\Controllers\Admin\RenbutApprovalController::class, 'downloadAttachment'])->name('renbuts.download_attachment');
 
         // Upload & Berkas SPJ (Format PDF - Untuk Admin PROGAR & PEKAS)

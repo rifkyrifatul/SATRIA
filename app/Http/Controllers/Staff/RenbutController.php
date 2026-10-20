@@ -57,7 +57,11 @@ class RenbutController extends Controller
         abort_unless($renbut->user_id === request()->user()->id, 403);
         abort_unless($renbut->file_path && Storage::disk('private')->exists($renbut->file_path), 404, 'File lampiran tidak ditemukan.');
 
-        return Storage::disk('private')->download($renbut->file_path);
+        $ext = pathinfo($renbut->file_path, PATHINFO_EXTENSION);
+        $safeName = \Illuminate\Support\Str::slug($renbut->title);
+        $downloadName = "Renbut_Lampiran_{$safeName}.{$ext}";
+
+        return Storage::disk('private')->download($renbut->file_path, $downloadName);
     }
 
     public function downloadResponse(Renbut $renbut)
@@ -65,6 +69,28 @@ class RenbutController extends Controller
         abort_unless($renbut->user_id === request()->user()->id, 403);
         abort_unless($renbut->response_file_path && Storage::disk('private')->exists($renbut->response_file_path), 404, 'File balasan tidak ditemukan.');
 
-        return Storage::disk('private')->download($renbut->response_file_path);
+        $ext = pathinfo($renbut->response_file_path, PATHINFO_EXTENSION);
+        $safeName = \Illuminate\Support\Str::slug($renbut->title);
+        $downloadName = "Renbut_Balasan_{$safeName}.{$ext}";
+
+        return Storage::disk('private')->download($renbut->response_file_path, $downloadName);
+    }
+
+    public function destroy(Renbut $renbut)
+    {
+        abort_unless($renbut->user_id === request()->user()->id, 403);
+        abort_unless($renbut->status === 'pending', 403, 'Pengajuan yang sudah diproses tidak dapat dihapus.');
+
+        if ($renbut->file_path && Storage::disk('private')->exists($renbut->file_path)) {
+            Storage::disk('private')->delete($renbut->file_path);
+        }
+
+        if ($renbut->response_file_path && Storage::disk('private')->exists($renbut->response_file_path)) {
+            Storage::disk('private')->delete($renbut->response_file_path);
+        }
+
+        $renbut->delete();
+
+        return redirect()->route('staff.renbuts.index')->with('success', 'Pengajuan Renbut berhasil dihapus.');
     }
 }

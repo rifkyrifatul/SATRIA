@@ -41,7 +41,12 @@ class RenbutApprovalController extends Controller
         $this->authorizeProgar(request()->user());
         abort_unless($renbut->file_path && Storage::disk(self::STORAGE_DISK)->exists($renbut->file_path), 404, 'File lampiran tidak ditemukan.');
 
-        return Storage::disk(self::STORAGE_DISK)->download($renbut->file_path);
+        $ext = pathinfo($renbut->file_path, PATHINFO_EXTENSION);
+        $safeName = \Illuminate\Support\Str::slug($renbut->title);
+        $safeUser = \Illuminate\Support\Str::slug($renbut->user->name ?? 'pemohon');
+        $downloadName = "Renbut_{$safeUser}_{$safeName}.{$ext}";
+
+        return Storage::disk(self::STORAGE_DISK)->download($renbut->file_path, $downloadName);
     }
 
     public function update(Request $request, Renbut $renbut)
@@ -69,6 +74,23 @@ class RenbutApprovalController extends Controller
         $renbut->update($validated);
 
         return redirect()->route('admin.renbuts.index')->with('success', 'Pengajuan Renbut berhasil di-' . $validated['status'] . '.');
+    }
+
+    public function destroy(Renbut $renbut)
+    {
+        $this->authorizeProgar(request()->user());
+
+        if ($renbut->file_path && Storage::disk(self::STORAGE_DISK)->exists($renbut->file_path)) {
+            Storage::disk(self::STORAGE_DISK)->delete($renbut->file_path);
+        }
+
+        if ($renbut->response_file_path && Storage::disk(self::STORAGE_DISK)->exists($renbut->response_file_path)) {
+            Storage::disk(self::STORAGE_DISK)->delete($renbut->response_file_path);
+        }
+
+        $renbut->delete();
+
+        return redirect()->route('admin.renbuts.index')->with('success', 'Pengajuan Renbut berhasil dihapus.');
     }
 
     private function authorizeProgar($user)
