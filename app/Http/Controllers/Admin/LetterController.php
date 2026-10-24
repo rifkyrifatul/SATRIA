@@ -605,9 +605,29 @@ class LetterController extends Controller
             'Surat tidak dalam status manual (KABAGUM/KASEK).'
         );
 
+        $validDisposisi = [
+            'UDK', 'ACC', 'TINDAK LANJUTI', 'AJUKAN SARAN', 'PELAJARI', 'PEDOMANI',
+            'LAPORKAN', 'IKUTI PERKEMBANGAN', 'KOORDINASIKAN', 'MENGHADAP SAYA',
+            'COPY', 'EDARKAN', 'ARSIPKAN', 'JAWAB', 'WAKILI SAYA',
+            'DAMPINGI SAYA', 'SIAPKAN BAHAN', 'BUAT NOTA DINAS',
+        ];
+
+        if ($letter->status === Letter::STATUS_PENDING_KASEK) {
+            $request->validate([
+                'disposisi_kasek'   => 'nullable|array',
+                'disposisi_kasek.*' => 'string|in:' . implode(',', $validDisposisi),
+                'catatan_disposisi' => 'nullable|string|max:2000',
+            ]);
+        }
+
         DB::beginTransaction();
 
         try {
+            $updateData = [
+                'updated_by' => $request->user()->id,
+                'version'    => $letter->version + 1,
+            ];
+
             if ($letter->status === Letter::STATUS_PENDING_KABAGUM) {
                 $nextStatus = Letter::STATUS_PENDING_KASEK;
                 $action = LetterLog::ACTION_FORWARD_KASEK;
@@ -618,16 +638,27 @@ class LetterController extends Controller
                 $action = LetterLog::ACTION_MARK_FINISHED;
                 $notes = 'Surat fisik (hard file) telah ditandatangani oleh KASEK dan berstatus Selesai.';
                 $successMsg = 'Surat berhasil ditandai sebagai Selesai.';
+
+                $disposisi = $request->input('disposisi_kasek');
+                $catatanDisposisi = $request->input('catatan_disposisi');
+
+                $updateData['disposisi_kasek'] = !empty($disposisi) ? json_encode(array_values($disposisi)) : null;
+                $updateData['catatan_disposisi'] = $catatanDisposisi ?: null;
+
+                if (!empty($disposisi)) {
+                    $notes .= ' [Disposisi Kasek: ' . implode(', ', $disposisi) . ']';
+                }
+                if (!empty($catatanDisposisi)) {
+                    $notes .= ' [Catatan: ' . $catatanDisposisi . ']';
+                }
             }
+
+            $updateData['status'] = $nextStatus;
 
             // ── 1. Perbarui status surat (Optimistic Locking) ─────────────────────────────────────────
             $affectedRows = Letter::where('id', $letter->id)
                                   ->where('version', $letter->version)
-                                  ->update([
-                                      'status'            => $nextStatus,
-                                      'updated_by'        => $request->user()->id,
-                                      'version'           => $letter->version + 1,
-                                  ]);
+                                  ->update($updateData);
 
             if ($affectedRows === 0) {
                 DB::rollBack();

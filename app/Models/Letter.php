@@ -50,6 +50,8 @@ class Letter extends Model
         'version',
         'created_by',
         'updated_by',
+        'disposisi_kasek',
+        'catatan_disposisi',
     ];
 
     /**
@@ -62,6 +64,7 @@ class Letter extends Model
         return [
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
+            'disposisi_kasek' => 'array',
         ];
     }
 

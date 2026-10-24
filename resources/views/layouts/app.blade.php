@@ -255,14 +255,7 @@
                 <a href="{{ route('admin.tracking.index') }}" class="{{ $menuClass($isActive('admin.tracking.*')) }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
                     <span x-show="sidebarOpen">Posisi Surat</span>
-                </a>
-                @if(Auth::user()->admin_level === 'admin_3')
-                <a href="{{ route('admin.mail_registries.index') }}" class="{{ $menuClass($isActive('admin.mail_registries.*')) }}">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                    <span x-show="sidebarOpen">Arsip Surat Eksternal</span>
-                </a>
-                @endif
-                <br>
+                </a><br>
 
                 <div class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">Penyimpanan & Utilitas</div>
                 <div class="my-4 border-t border-slate-800 mx-3"></div>
@@ -270,6 +263,10 @@
                 <a href="{{ route('admin.archives.index') }}" class="{{ $menuClass($isActive('admin.archives.*')) }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
                     <span x-show="sidebarOpen">Arsip Surat Internal</span>
+                </a>
+                <a href="{{ route('admin.mail_registries.index') }}" class="{{ $menuClass($isActive('admin.mail_registries.*')) }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    <span x-show="sidebarOpen">Arsip Surat Eksternal</span>
                 </a>
                 @endif
                 @if(in_array(Auth::user()->admin_level, ['admin_1', 'admin_2']))
